@@ -1,13 +1,18 @@
 
 
-// var last = "reza"
-// console.log(last)
+console.log('test@!&&hala&&Q23(34'.split('&&'))
+const myRe = new RegExp('(.*?)', 'g');
 
-// var obj = {
-//     name: "reza" ,
-//     lastName: "yari"
-// } as const
+const myarr = myRe.exec('test(reza)')
+console.log(myarr)
 
-// obj.name = "mamad"
+const txt = "(Q23(34 || 12)) & (Q12(45 && 11))";
+let newtxt = txt.split('&')
+console.log(newtxt)
+const regExp = /\(([^)]+)\)/g;
+const matches = [...txt.match(regExp)];
+console.log(matches)
+matches.forEach(item => {
+    console.log(item.slice(1 , -1))
+})
 
-// console.log(obj)
