@@ -84,7 +84,7 @@ const conditions = [
         display: false
     },
     {
-        script: 'Q23(34 || 1 || 34) and Q12(25 || 11)',
+        script: 'Q23(34 || 1 || 34) or Q12(25 || 11)',
         targetQuestionIds: '23,12,56',
         targetChoiceIds: '12,11,10',
         active: false,
@@ -102,9 +102,25 @@ const conditions = [
 
 
 const conditionFormatter = (conditions) => {
+    const regex = new RegExp('((Q\d\((\d+(&&|\|\|)*)*\))(and|or)*)*');
     return cookedConditions = conditions.map(condition => {
+        let conditionOperand = 'and'
         let str = condition.script.replace(/\s/g, '')
+        regexCheck = regex.test(str)
+        if (!regexCheck) {
+            return null
+        }
+        console.log(regexCheck)
         let conditionUnits = str.split('and')
+        if (str.match('and')) {
+            conditionUnits = str.split('and')
+            conditionOperand = 'and'
+        }
+        else if (str.match('or')) {
+            conditionUnits = str.split('or')
+            conditionOperand = 'or'
+        }
+        console.log(conditionUnits)
         let conditionsObject = conditionUnits.map(item => {
             let questionId, choiceIds, operand;
             if (item.match(/Q\d+/)[0]) {
@@ -137,11 +153,12 @@ const conditionFormatter = (conditions) => {
                 console.log('do not wirte these condition yet')
             }
         })
+
         return {
             ...condition,
             condition: {
                 conditions: conditionsObject,
-                conditionsOperand: 'and'
+                conditionsOperand: conditionOperand
             }
         }
 
